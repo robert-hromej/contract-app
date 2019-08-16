@@ -13,6 +13,17 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
+if ENV['RAILS_ENV'] == 'test'
+  require 'simplecov'
+  SimpleCov.minimum_coverage_by_file 80
+  SimpleCov.profiles.define 'filtered' do
+    load_profile 'rails'
+    add_filter 'lib'
+  end
+
+  SimpleCov.start 'filtered'
+end
+
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
