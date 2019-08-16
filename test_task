@@ -22,6 +22,17 @@ Requirements:
 - add documentation to GraphQL when you create new type (query, mutation, enum, input object)
 - test your API calls and add unit tests
 
-
 Sub tasks
-1) generate project, add rspec + rubocop + simplecov.
+1. planning. - 10 minutes.
+2. generate project; add rspec; add rubocop; add simplecov; configurations; clean project; - 15 minutes.
+3. create migrations. - 1 minutes.
+4. researching.
+    4.1 GraphQL.
+    4.2 form object pattern.
+    4.3 service object pattern.
+5. write rpsec tests.
+6. implementation.
+    6.1 Validations
+    6.2 TODO.
+7. refactoring.
+8. Release(push to github or Heroku)
