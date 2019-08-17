@@ -1,13 +1,9 @@
-module Types
-  class QueryType < Types::BaseObject
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+class Types::QueryType < Types::BaseObject
+  description 'Query for Returning Contracts'
 
-    # # TODO: remove me
-    # field :test_field, String, null: false,
-    #                            description: 'An example field added by the generator'
-    # def test_field
-    #   'Hello World!'
-    # end
+  field :contracts, [Types::ContractType], null: true, description: 'gets all contracts'
+
+  def contracts
+    Contract.all
   end
 end

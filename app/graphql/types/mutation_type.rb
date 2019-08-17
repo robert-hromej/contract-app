@@ -1,10 +1,7 @@
-module Types
-  class MutationType < Types::BaseObject
-    # # TODO: remove me
-    # field :test_field, String, null: false,
-    #                            description: 'An example field added by the generator'
-    # def test_field
-    #   'Hello World'
-    # end
-  end
+class Types::MutationType < Types::BaseObject
+  description 'Mutations for Updating Contracts'
+
+  field :create_contract, mutation: Mutations::CreateContract
+  field :destroy_contract, mutation: Mutations::DestroyContract
+  field :update_contract, mutation: Mutations::UpdateContract
 end
