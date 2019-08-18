@@ -9,7 +9,7 @@ class NotInPastValidator < ActiveModel::EachValidator
 end
 
 class Contract < ApplicationRecord
-  validates :name, presence: true, length: { minimum: 1, maximum: 255 }
+  validates :name, presence: true, uniqueness: true, length: { minimum: 1, maximum: 255 }
   validates :status, presence: true, inclusion: { in: %w(signed draft) }
   validates :start_date, presence: true, not_in_past: true
 end
