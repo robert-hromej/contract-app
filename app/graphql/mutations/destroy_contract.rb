@@ -1,5 +1,5 @@
 class Mutations::DestroyContract < Mutations::BaseMutation
-  description 'endpoint for destroying the Contract'
+  description 'Mutations(endpoint) for destroying the Contract'
 
   null true
 

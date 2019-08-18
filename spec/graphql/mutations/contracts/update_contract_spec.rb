@@ -9,19 +9,20 @@ RSpec.describe Mutations::UpdateContract, type: :request do
                         start_date: Date.today,
                         avg_monthly_price: 123)
 
-      new_attributes = {
+      input = {
         id: contract.id,
         status: 'draft',
         name: 'my changed contract',
-        start_date: Date.today + 1.days,
-        avg_monthly_price: 321
+        startDate: (Date.today + 1.days).strftime('%F'),
+        avgMonthlyPrice: 321
       }
 
-      post '/graphql', params: { query: query(new_attributes) }
+      post '/graphql', params: { query: query, variables: { input: input } }
 
       json = JSON.parse(response.body)
-      data = json['data']['updateContract']['contract']
       errors = json['data']['updateContract']['errors']
+      puts errors unless errors.blank?
+      data = json['data']['updateContract']['contract']
 
       expect(data).to include(
         'status' => 'draft',
@@ -40,16 +41,10 @@ RSpec.describe Mutations::UpdateContract, type: :request do
     end
   end
 
-  def query(id:, status:, name:, start_date:, avg_monthly_price:)
+  def query
     <<~GQL
-      mutation {
-        updateContract(
-          id: #{id}
-          status: "#{status}"
-          name: "#{name}"
-          startDate: "#{start_date}"
-          avgMonthlyPrice: #{avg_monthly_price}
-        ) {
+      mutation updateContract($input: ContractUpdateForm!) {
+        updateContract(input: $input) {
           contract {
             id
             status

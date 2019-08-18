@@ -1,22 +1,12 @@
 class Mutations::UpdateContract < Mutations::CreateContract
-  description 'endpoint for updating the Contract attributes'
+  description 'Mutations(endpoint) for updating the Contract attributes'
 
-  argument :id, ID, required: true
+  argument :input, Types::ContractUpdateForm, required: true
 
-  def resolve(id:,
-              status:,
-              name:,
-              start_date:,
-              avg_monthly_price:)
+  def resolve(input:)
+    contract = Contract.find(input.id)
 
-    contract = Contract.find(id)
-
-    params = { status: status,
-               name: name,
-               start_date: start_date,
-               avg_monthly_price: avg_monthly_price }
-
-    if contract.update(params)
+    if contract.update(input.to_hash)
       { contract: contract, errors: [] }
     else
       { contract: nil, errors: contract.errors.full_messages }
