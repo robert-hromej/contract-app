@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Types::QueryType', type: :request do
+describe 'Types::QueryType', type: :request do
   it 'returns first item' do
     contract = create(:contract,
                       status: 'signed',

@@ -10,13 +10,9 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(input:)
-      contract = Contract.new(input.to_hash)
-
-      if contract.save
-        { contract: contract, errors: [] }
-      else
-        { contract: nil, errors: contract.errors.full_messages }
-      end
+      form = ContractForm.new(input.to_h)
+      result = ContractCreate.new(form: form).call
+      response(result: result)
     end
   end
 end

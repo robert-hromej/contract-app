@@ -10,9 +10,9 @@ module Mutations
     field :errors, [String], null: false
 
     def resolve(id:)
-      contract = Contract.find(id)
-      contract.destroy
-      { contract: contract, errors: [] }
+      service = ContractDestroy.new(id: id)
+      result = service.call
+      response(result: result)
     end
   end
 end

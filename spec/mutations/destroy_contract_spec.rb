@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Mutations::DestroyContract', type: :request do
+describe 'Mutations::DestroyContract', type: :request do
   describe 'resolve' do
     it 'removes a contract' do
       contract = create(:contract)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Mutations::CreateContract', type: :request do
+describe 'Mutations::CreateContract', type: :request do
   describe '.resolve' do
     it 'creates a contract' do
       contract = create(:contract, name: 'first contract')
