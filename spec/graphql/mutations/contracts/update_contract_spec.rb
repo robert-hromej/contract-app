@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Mutations::UpdateContract, type: :request do
+RSpec.describe 'Mutations::UpdateContract', type: :request do
   describe 'resolve' do
     it 'updates a contract' do
       contract = create(:contract,
@@ -10,14 +10,13 @@ RSpec.describe Mutations::UpdateContract, type: :request do
                         avg_monthly_price: 123)
 
       input = {
-        id: contract.id,
         status: 'draft',
         name: 'my changed contract',
-        startDate: (Date.today + 1.days).strftime('%F'),
+        startDate: (Date.today + 1.days).to_datetime.iso8601,
         avgMonthlyPrice: 321
       }
 
-      post '/graphql', params: { query: query, variables: { input: input } }
+      post '/graphql', params: { query: query, variables: { id: contract.id, input: input } }, as: :json
 
       json = JSON.parse(response.body)
       errors = json['data']['updateContract']['errors']
@@ -27,7 +26,7 @@ RSpec.describe Mutations::UpdateContract, type: :request do
       expect(data).to include(
         'status' => 'draft',
         'name' => 'my changed contract',
-        'startDate' => (Date.today + 1.days).strftime('%F'),
+        'startDate' => (Date.today + 1.days).to_datetime.iso8601,
         'avgMonthlyPrice' => 321
       )
       expect(errors).to be_empty
@@ -43,8 +42,8 @@ RSpec.describe Mutations::UpdateContract, type: :request do
 
   def query
     <<~GQL
-      mutation updateContract($input: ContractUpdateForm!) {
-        updateContract(input: $input) {
+      mutation updateContract($id: ID!, $input: ContractAttributes!) {
+        updateContract(id: $id, input: $input) {
           contract {
             id
             status

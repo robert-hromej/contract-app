@@ -1,16 +1,18 @@
-class Mutations::DestroyContract < Mutations::BaseMutation
-  description 'Mutations(endpoint) for destroying the Contract'
+module Mutations
+  class DestroyContract < BaseMutation
+    description 'Mutations(endpoint) for destroying the Contract'
 
-  null true
+    null false
 
-  argument :id, ID, required: true
+    argument :id, ID, required: true
 
-  field :contract, Types::ContractType, null: true
-  field :errors, [String], null: false
+    field :contract, Types::ContractType, null: true
+    field :errors, [String], null: false
 
-  def resolve(id:)
-    contract = Contract.find(id)
-    contract.destroy
-    { contract: contract, errors: [] }
+    def resolve(id:)
+      contract = Contract.find(id)
+      contract.destroy
+      { contract: contract, errors: [] }
+    end
   end
 end

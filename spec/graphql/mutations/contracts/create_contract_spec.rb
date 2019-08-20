@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Mutations::CreateContract, type: :request do
+RSpec.describe 'Mutations::CreateContract', type: :request do
   describe '.resolve' do
     it 'creates a contract' do
       contract = create(:contract, name: 'first contract')
@@ -8,14 +8,15 @@ RSpec.describe Mutations::CreateContract, type: :request do
       input = {
         status: contract.status,
         name: 'second contract',
-        startDate: contract.start_date.strftime('%F'),
-        avgMonthlyPrice: contract.avg_monthly_price.inspect
+        startDate: contract.start_date.to_datetime.iso8601,
+        avgMonthlyPrice: contract.avg_monthly_price.to_f
       }
 
       json = {}
+      errors = []
 
       expect do
-        post '/graphql', params: { query: query, variables: { input: input } }
+        post '/graphql', params: { query: query, variables: { input: input } }, as: :json
         json = JSON.parse(response.body)
         errors = json['data']['createContract']['errors']
         puts errors unless errors.blank?
@@ -29,15 +30,15 @@ RSpec.describe Mutations::CreateContract, type: :request do
         'id' => be_present,
         'status' => contract.status,
         'name' => 'second contract',
-        'startDate' => contract.start_date.strftime('%F'),
-        'avgMonthlyPrice' => contract.avg_monthly_price.to_f
+        'startDate' => contract.start_date.iso8601,
+        'avgMonthlyPrice' => contract.avg_monthly_price
       )
     end
   end
 
   def query
     <<~GQL
-      mutation createContract($input: ContractCreateForm!) {
+      mutation createContract($input: ContractAttributes!) {
         createContract(input: $input) {
           contract {
             id

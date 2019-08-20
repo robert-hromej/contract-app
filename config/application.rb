@@ -17,5 +17,8 @@ module ContractApp
                        controller_spec: true
       g.fixture_replacement :factory_bot, dir: 'spec/factories'
     end
+
+    # TODO remove
+    config.api_only = true
   end
 end

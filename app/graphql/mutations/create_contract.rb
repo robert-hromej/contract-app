@@ -1,20 +1,22 @@
-class Mutations::CreateContract < Mutations::BaseMutation
-  description 'Mutations(endpoint) for creating new Contract'
+module Mutations
+  class CreateContract < BaseMutation
+    description 'Mutations(endpoint) for creating new Contract'
 
-  null true
+    null false
 
-  argument :input, Types::ContractCreateForm, required: true
+    argument :input, Types::ContractAttributes, required: true
 
-  field :contract, Types::ContractType, null: true
-  field :errors, [String], null: false
+    field :contract, Types::ContractType, null: true
+    field :errors, [String], null: false
 
-  def resolve(input:)
-    contract = Contract.new(input.to_hash)
+    def resolve(input:)
+      contract = Contract.new(input.to_hash)
 
-    if contract.save
-      { contract: contract, errors: [] }
-    else
-      { contract: nil, errors: contract.errors.full_messages }
+      if contract.save
+        { contract: contract, errors: [] }
+      else
+        { contract: nil, errors: contract.errors.full_messages }
+      end
     end
   end
 end

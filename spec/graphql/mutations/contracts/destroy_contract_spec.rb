@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Mutations::DestroyContract, type: :request do
+RSpec.describe 'Mutations::DestroyContract', type: :request do
   describe 'resolve' do
     it 'removes a contract' do
       contract = create(:contract)
@@ -22,8 +22,8 @@ RSpec.describe Mutations::DestroyContract, type: :request do
         'id' => be_present,
         'status' => contract.status,
         'name' => 'test contract name',
-        'startDate' => contract.start_date.strftime('%F'),
-        'avgMonthlyPrice' => contract.avg_monthly_price.to_f
+        'startDate' => contract.start_date.iso8601,
+        'avgMonthlyPrice' => contract.avg_monthly_price
       )
       expect(errors).to be_empty
     end
